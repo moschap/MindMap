@@ -1,0 +1,20 @@
++ a view showing a card with an image and a label New Card - tapping the image spins it around and 
+shows the name of the image with a continue button
++ after every 2 cards one of the previously displayed 2 images is shown with different options to 
+select from,
++ if you select the wrong option the image will vibrate and remain
++ If the right option is selected then a happy image slides in from the bottom to a fixed location and then after about 2 secs slides off to the side.
+
+[{
+    id: 0,
+    front: {
+        type: 'text', //text/image
+        text: '', 
+        img: ''
+    },
+    back: {
+        text: '', 
+    }
+}]
+
+Deck = [Card]

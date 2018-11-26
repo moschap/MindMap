@@ -1,4 +1,28 @@
 import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import Deck from './src/Deck'
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    return (
+      <View style={{flex: 1}}>
+        <Deck />
+      </View>
+    );
+  }
+}
+
+export default App;
+
+/*
+
+import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   PanGestureHandler,
@@ -120,3 +144,5 @@ const styles = StyleSheet.create({
     height: IMAGE_SIZE,
   },
 });
+
+*/
