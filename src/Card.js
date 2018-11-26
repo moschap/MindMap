@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Alert, View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import { TapGestureHandler, State } from "react-native-gesture-handler";
 import Animated, { Easing } from "react-native-reanimated";
@@ -53,25 +53,26 @@ class Card extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isTapped: false
+            isTapped: true
         };
-        //this.trans = runTiming(new Clock(), 0, 180);
-        this.trans = new Value(0)
-
-        this.handleTapEvent = event([
+        this.trans = new Value(0);
+        this._onHandlerStateChange = event([
             {
-                nativeEvent: ({ state }) =>
-                    block([
-                        cond(
-                            eq(state, State.BEGAN),
-                            [
-                                set(this.trans, runTiming(new Clock(), 0, 180)),
-                                //this.trans
-                            ]
-                        )
-                    ])
+                nativeEvent: ({ state }) => block([
+                    debug('%%%%%%%%%%%%%%', state),
+                    cond(
+                        eq(state, State.BEGAN),
+                        set(this.trans, runTiming(new Clock(), 0, 180))
+                    ),
+                    //this.trans
+                ])
             }
         ]);
+        // this._onHandlerStateChange = event => {
+        //     if (event.nativeEvent.state === State.ACTIVE) {
+        //       Alert.alert("I'm being pressed for so long");
+        //     }
+        // }
     }
 
     //callback when the animation is done
@@ -80,7 +81,7 @@ class Card extends Component {
     };
 
     render() {
-        console.log(this.trans)
+        //console.log(this.trans)
         const { upperWindow: height, width, data } = this.props;
         return (
             <View style={[styleSheet.upperBoxHeight, { height, width }]}>
@@ -95,7 +96,10 @@ class Card extends Component {
                         New Image
                     </Text>
                 </View>
-                <TapGestureHandler onHandlerStateChange={this.handleTapEvent}>
+                <TapGestureHandler
+                    onGestureEvent={this._onHandlerStateChange}
+                    onHandlerStateChange={this._onHandlerStateChange}
+                >
                     <Animated.Image
                         source={{ uri: data.front.big_img }}
                         style={{
@@ -106,6 +110,7 @@ class Card extends Component {
                             borderRadius: 10,
                             marginVertical: 12,
                             transform: [{ rotateY: concat(this.trans, "deg") }]
+                            //transform: [{translateX: this.trans}]
                         }}
                     />
                 </TapGestureHandler>
@@ -127,14 +132,11 @@ class Card extends Component {
 
 const styleSheet = StyleSheet.create({
     upperBoxHeight: {
-        // height: this.props.upperWindow,
-        // width: this.props.width,
         paddingVertical: 10,
         paddingHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
         borderColor: "#dedddd"
-        //borderWidth: StyleSheet.hairlineWidth
     }
 });
 

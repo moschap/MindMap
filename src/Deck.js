@@ -62,9 +62,10 @@ class Deck extends Component {
                     />
                 )}
 
-                {appState === "tell" && (
+                {appState === "show" && (
+                //{appState === "tell" && (
                     <View style={{ flex: 1 }}>
-                        <Card height={upperWindow} width={width} />
+                        {/* <Card height={upperWindow} width={width} data={data[currentIndex]} /> */}
                         <View style={styleSheet.lowerBoxHeight}>
                             <QuestionCards options={data} />
                         </View>
