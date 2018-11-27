@@ -36,6 +36,8 @@ function runTiming(clock, value, dest) {
     toValue: new Value(0),
     easing: Easing.inOut(Easing.ease)
   };
+  
+  // configuration flag on very begging of animation
   const configured = new Value(0);
 
   return block([
