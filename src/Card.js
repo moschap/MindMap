@@ -74,7 +74,6 @@ class Card extends Component {
     };
 
     render() {
-        console.log("SSSS")
         const { upperWindow: height, width, data } = this.props;
         return (
             <View style={[styleSheet.upperBoxHeight, { height, width }]}>
