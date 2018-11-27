@@ -38,9 +38,8 @@ function runTiming(clock, value, dest) {
         cond(clockRunning(clock), 0, [
             set(state.finished, 0),
             set(state.time, 0),
-            set(state.position, value),
             set(state.frameTime, 0),
-            set(config.toValue, dest),
+            set(config.toValue, cond(eq(state.position, dest), value, dest)),
             startClock(clock)
         ]),
         timing(clock, state, config),
@@ -58,21 +57,15 @@ class Card extends Component {
         this.trans = new Value(0);
         this._onHandlerStateChange = event([
             {
-                nativeEvent: ({ state }) => block([
-                    debug('%%%%%%%%%%%%%%', state),
+                nativeEvent: ({ oldState }) => block([
                     cond(
-                        eq(state, State.BEGAN),
+                        eq(oldState, State.ACTIVE),
                         set(this.trans, runTiming(new Clock(), 0, 180))
                     ),
                     //this.trans
                 ])
             }
         ]);
-        // this._onHandlerStateChange = event => {
-        //     if (event.nativeEvent.state === State.ACTIVE) {
-        //       Alert.alert("I'm being pressed for so long");
-        //     }
-        // }
     }
 
     //callback when the animation is done
@@ -81,7 +74,7 @@ class Card extends Component {
     };
 
     render() {
-        //console.log(this.trans)
+        console.log("SSSS")
         const { upperWindow: height, width, data } = this.props;
         return (
             <View style={[styleSheet.upperBoxHeight, { height, width }]}>
@@ -97,7 +90,6 @@ class Card extends Component {
                     </Text>
                 </View>
                 <TapGestureHandler
-                    onGestureEvent={this._onHandlerStateChange}
                     onHandlerStateChange={this._onHandlerStateChange}
                 >
                     <Animated.Image
