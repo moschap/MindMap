@@ -8,6 +8,7 @@ const {
     set,
     cond,
     startClock,
+    and,
     stopClock,
     clockRunning,
     block,
@@ -15,6 +16,7 @@ const {
     debug,
     Value,
     Clock,
+  not,
     divide,
     event,
     concat
@@ -33,17 +35,27 @@ function runTiming(clock, value, dest) {
         toValue: new Value(0),
         easing: Easing.inOut(Easing.ease)
     };
+    const configured = new Value(0)
 
     return block([
-        cond(clockRunning(clock), 0, [
+        cond(and(clockRunning(clock), not(configured)), [
             set(state.finished, 0),
             set(state.time, 0),
             set(state.frameTime, 0),
-            set(config.toValue, cond(eq(state.position, dest), value, dest)),
-            startClock(clock)
+            set(configured, 1),
+            cond(eq(state.position, dest), [
+              set(config.toValue, value),
+              set(state.position, dest),
+            ], [
+              set(config.toValue, dest),
+              set(state.position, value),
+            ])
         ]),
         timing(clock, state, config),
-        cond(state.finished, debug("stop clock", stopClock(clock))),
+        cond(state.finished, [
+          set(configured, 0),
+          stopClock(clock),
+        ]),
         state.position
     ]);
 }
@@ -54,17 +66,19 @@ class Card extends Component {
         this.state = {
             isTapped: true
         };
-        this.trans = new Value(0);
+        const c = new Clock();
+        this.trans = runTiming(c, 0, 180);
         this._onHandlerStateChange = event([
-            {
-                nativeEvent: ({ oldState }) => block([
-                    cond(
-                        eq(oldState, State.ACTIVE),
-                        set(this.trans, runTiming(new Clock(), 0, 180))
-                    ),
-                    //this.trans
-                ])
-            }
+{
+    nativeEvent: ({ oldState }) => block([
+        cond(
+            eq(oldState, State.ACTIVE),
+            startClock(c)
+            //set(this.trans, runTiming(c, 0, 180))
+        ),
+        //this.trans
+    ])
+}
         ]);
     }
 
