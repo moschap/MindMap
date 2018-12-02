@@ -6,7 +6,7 @@ Thank you once again for the last update that you submitted, so this is what i w
 My questions is
 1. Please can you rather than write the code, describe to me how to solve the problem, i want to see if i can write the code instead. I have actually done something but it doesnt work you can check it out @ [QuestionsCard.js](https://github.com/moschap/MindMap/blob/master/src/QuestionCards.js)
 
-## End of Update
+## Initial Gist
 
 The essense of this project is to build a clone of the animations found in the Android app - **tinycards from duolingo**. 
 Am only trying to replicate one screen for the walk-through, but in that screen there are a couple of animations namely:
