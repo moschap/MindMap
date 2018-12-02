@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 
 import Card from "./Card";
+import TwoFacedCard from "./TwoFacedCard"
 import QuestionCards from "./QuestionCards";
 
 const { width, height } = Dimensions.get("window");
@@ -54,16 +55,17 @@ class Deck extends Component {
         const { appState, currentIndex } = this.state;
         return (
             <View style={styleSheet.container}>
-                {appState === "show" && (
-                    <Card
+                {(appState === "show" || appState === "showandtell") && (
+                    <TwoFacedCard
                         height={upperWindow}
-                        width={width}
                         data={data[currentIndex]}
+                        onReadyToRefresh={()=>this.setState({ appState: "showandtell"})}
                     />
                 )}
 
-                {appState === "show" && (
-                //{appState === "tell" && (
+                
+                {/* {appState === "show" && ( */}
+                {appState === "showandtell" && (
                     <View style={{ flex: 1 }}>
                         {/* <Card height={upperWindow} width={width} data={data[currentIndex]} /> */}
                         <View style={styleSheet.lowerBoxHeight}>
@@ -86,10 +88,10 @@ const styleSheet = StyleSheet.create({
         width,
         paddingVertical: 10,
         paddingHorizontal: 10,
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
-        borderColor: "#dedeee",
-        borderWidth: StyleSheet.hairlineWidth
+        //borderColor: "#dedeee",
+        //borderWidth: StyleSheet.hairlineWidth
     }
 });
 
